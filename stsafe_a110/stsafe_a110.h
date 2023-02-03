@@ -7,8 +7,8 @@
 
 namespace sixtron {
 
-class STSafeA110
-{
+class STSafeA110 {
+
 public:
     STSafeA110();
 };
