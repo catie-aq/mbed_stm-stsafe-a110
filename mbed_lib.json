@@ -1,0 +1,17 @@
+{
+    "name": "stm-stsafe-A110",
+    "config": {
+        "i2c-sda": {
+            "help": "I2C sda.",
+            "value": "I2C1_SDA"
+        },
+        "i2c-scl": {
+            "help": "I2C scl.",
+            "value": "I2C1_SCL"
+        },
+        "reset": {
+            "help": "Reset.",
+            "value": "DIO1"
+        }
+    }
+}
