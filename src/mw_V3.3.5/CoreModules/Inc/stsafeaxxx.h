@@ -24,7 +24,6 @@
 extern "C" {
 #endif /* __cplusplus */
 
-#define STSAFE_A110
 
 /* Includes ------------------------------------------------------------------*/
 #if defined(STSAFE_A100)
