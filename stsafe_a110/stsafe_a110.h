@@ -21,6 +21,9 @@ public:
     int update_data_partition(uint8_t zone_index, uint8_t *buf, uint16_t length);
 
     int read_data_partition(uint8_t zone_index, uint8_t *buf, uint16_t length);
+
+    int generate_c_mac_key(uint8_t *buf, uint16_t length);
+
 };
 
 } // namespace sixtron

@@ -66,4 +66,15 @@ int STSafeA110::read_data_partition(uint8_t zone_index, uint8_t *buf, uint16_t l
             != STSAFEA_OK;
 }
 
+int STSafeA110::generate_c_mac_key(uint8_t *buf, uint16_t length)
+{
+    StSafeA_LVBuffer_t lv_buffer;
+    lv_buffer.Data = buf;
+    lv_buffer.Length = length;
+
+    return StSafeA_GenerateRandom(
+                   &stsafe_handler, STSAFEA_EPHEMERAL_RND, length, &lv_buffer, STSAFEA_MAC_NONE)
+            != STSAFEA_OK;
+}
+
 } // namespace sixtron
