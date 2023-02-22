@@ -24,6 +24,7 @@ public:
 
     int generate_c_mac_key(uint8_t *buf, uint16_t length);
 
+    int generate_cipher_key(uint8_t *buf, uint16_t length);
 };
 
 } // namespace sixtron
