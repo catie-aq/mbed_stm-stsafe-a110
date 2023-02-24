@@ -88,4 +88,10 @@ int STSafeA110::generate_cipher_key(uint8_t *buf, uint16_t length)
             != STSAFEA_OK;
 }
 
+int STSafeA110::send_put_attribute(
+    uint8_t *buf, uint16_t length, uint8_t c_mac, uint8_t cipher_key)
+{
+    return StSafeA_PutAttribute(&stsafe_handler, cipher_key, buf, length, c_mac)
+            != STSAFEA_OK;
+}
 } // namespace sixtron
