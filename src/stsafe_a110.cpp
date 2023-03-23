@@ -4,6 +4,7 @@
  */
 #include "stsafe_a110/stsafe_a110.h"
 #include "stsafea_core.h"
+#include "stsafea_interface_conf.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -28,7 +29,6 @@ namespace sixtron {
 
 static StSafeA_Handle_t stsafe_handler;
 static uint8_t rx_tx_buffer[STSAFEA_BUFFER_MAX_SIZE];
-static uint8_t idx = 0;
 
 STSafeA110::STSafeA110()
 {
@@ -121,15 +121,11 @@ int32_t STSafeA110::check_local_envelope_key()
     return StatusCode;
 }
 
-int32_t STSafeA110::check_host_keys(uint8_t* Host_MAC_Cipher_Key,Callback<int(uint8_t*)> function)
+int32_t STSafeA110::check_host_keys(uint8_t *Host_MAC_Cipher_Key, Callback<int(uint8_t *)> function)
 {
     int32_t StatusCode = 0;
     StSafeA_HostKeySlotBuffer_t HostKeySlot;
 
-    if (!(IS_FLASH_PAGE(PAGE_NUMBER))) {
-        printf("\n\r    %d Flash page out of range", idx);
-        return 1;
-    }
 #if USE_HOST_KEYS_SET_BY_PAIRING_APP
     /* Generate both keys */
     STS_CHK(StatusCode,
@@ -138,10 +134,8 @@ int32_t STSafeA110::check_host_keys(uint8_t* Host_MAC_Cipher_Key,Callback<int(ui
     /* Check if host cipher key & host MAC key are populated */
     STS_CHK(StatusCode,
             (int32_t)StSafeA_HostKeySlotQuery(&stsafe_handler, &HostKeySlot, STSAFEA_MAC_NONE));
-
     if ((StatusCode == 0) && (HostKeySlot.HostKeyPresenceFlag == 0U)) // Not populated
     {
-
         /* Send both keys to STSAFE */
         STS_CHK(StatusCode,
                 (int32_t)StSafeA_PutAttribute(&stsafe_handler,
@@ -150,13 +144,14 @@ int32_t STSafeA110::check_host_keys(uint8_t* Host_MAC_Cipher_Key,Callback<int(ui
                         2U * STSAFEA_HOST_KEY_LENGTH,
                         STSAFEA_MAC_NONE));
         /* Save both keys to STM32 FLASH */
-        function(Host_MAC_Cipher_Key);
+        if (StatusCode == 0) {
+            function(Host_MAC_Cipher_Key);
+        }
     }
-
     return StatusCode;
 }
 
-int32_t STSafeA110::pairing(uint8_t* Host_MAC_Cipher_Key,Callback<int(uint8_t*)> function)
+int32_t STSafeA110::pairing(uint8_t *Host_MAC_Cipher_Key, Callback<int(uint8_t *)> function)
 {
     int32_t StatusCode = 0;
 
@@ -166,7 +161,7 @@ int32_t STSafeA110::pairing(uint8_t* Host_MAC_Cipher_Key,Callback<int(uint8_t*)>
 #endif
 
     /* Check cipher key & host CMAC key and provide flash sector where save both keys */
-    STS_CHK(StatusCode, check_host_keys(Host_MAC_Cipher_Key,function));
+    STS_CHK(StatusCode, check_host_keys(Host_MAC_Cipher_Key, function));
 
     return StatusCode;
 }
