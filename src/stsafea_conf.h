@@ -63,7 +63,7 @@ extern "C" {
 #ifdef STSAFE_A100
 /* Set to 1 in order to use Signature Sessions.
    Set to 0 to optimize code/memory size otherwise */
-#define USE_SIGNATURE_SESSION                           0U
+#define USE_SIGNATURE_SESSION                           1U
 #endif /* STSAFE_A100 */
 
 /* To optimize I2C Polling for STSAFE functions */
