@@ -2057,6 +2057,7 @@ StSafeA_ResponseCode_t StSafeA_HostKeySlotQuery(
 
     /* Transmit */
     status_code = StSafeA_TransmitCommand(pStSafeA);
+    printf("\n[FAIRY]\n");
 
     if (status_code == STSAFEA_OK)
     {
@@ -2399,6 +2400,7 @@ StSafeA_ResponseCode_t StSafeA_LocalEnvelopeKeySlotQuery(
 
     /* Transmit */
     status_code = StSafeA_TransmitCommand(pStSafeA);
+    printf("\n[DRAGON]\n");
 
     if (status_code == STSAFEA_OK)
     {
