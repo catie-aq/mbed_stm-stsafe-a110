@@ -31,6 +31,13 @@ int STSafeA110::echo(uint8_t *buffer_in, uint8_t *buffer_out, size_t length)
 
 uint8_t STSafeA110::pairing(uint8_t *Host_MAC_Cipher_Key)
 {
+    // C-MAC and Cipher keys are used to MAC the Command (C-MAC) and Response (R-MAC)
+
+    // Host request 128b random Host C-MAC key via stsafe
+    // Host request 128b random Host cipher key via stsafe
+    // Host send the two previous concatenated keys to the Host key slot via PUT ATTRIBUTE
+    // Stsafe stores the keys into their respective slots
+    // Host stores the keys to a secure area
 }
 
 int STSafeA110::update_data_partition(uint8_t zone_index, uint8_t *buf, uint16_t length)
