@@ -35,7 +35,7 @@ uint8_t STSafeA110::pairing()
 
     // Host request 128b random Host C-MAC key via stsafe
     // Host request 128b random Host cipher key via stsafe
-    // Host send the two previous concatenated keys to the Host key slot via PUT ATTRIBUTE
+    // Host send the two previous concatenated keys to the Host key slot via PUT ATTRIBUTE (needs DELETE KEY if slot already occupied)
     // Stsafe stores the keys into their respective slots
     // Host stores the keys to a secure area
 }
