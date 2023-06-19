@@ -55,7 +55,7 @@ extern "C" {
 
 /* Set to 1 to optimize RAM/Flash usage, when Host MAC and encryption features are not required
   (eg. Authentication use case) */
-#define STSAFEA_USE_OPTIMIZATION_NO_HOST_MAC_ENCRYPT    1U
+#define STSAFEA_USE_OPTIMIZATION_NO_HOST_MAC_ENCRYPT    0U
 
 /* Set to 1 to expanse the "assert_param" macro in the STSAFE middleware code */
 #define STSAFEA_USE_FULL_ASSERT                         0U

@@ -15,11 +15,6 @@
         "reset": {
             "help": "Reset.",
             "required": true
-        },
-        "debug-log": {
-            "help": "Debug LOG.",
-            "required": false,
-            "value": false
         }
     }
 }
