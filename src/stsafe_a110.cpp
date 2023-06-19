@@ -29,7 +29,7 @@ int STSafeA110::echo(uint8_t *buffer_in, uint8_t *buffer_out, size_t length)
             != STSAFEA_OK;
 }
 
-uint8_t STSafeA110::pairing(uint8_t *Host_MAC_Cipher_Key)
+uint8_t STSafeA110::pairing()
 {
     // C-MAC and Cipher keys are used to MAC the Command (C-MAC) and Response (R-MAC)
 

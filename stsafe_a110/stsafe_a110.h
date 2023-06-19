@@ -30,12 +30,12 @@ public:
 
     int read_data_partition(uint8_t zone_index, uint8_t *buf, uint16_t length);
 
-    uint8_t pairing(uint8_t *Host_MAC_Cipher_Key);
+    uint8_t pairing();
 
 private:
 
     uint8_t _statusCode;
-    
+
 };
 
 } // namespace sixtron
