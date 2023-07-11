@@ -41,6 +41,11 @@ extern "C" {
 /** @defgroup STSAFEA_CONFIG_Exported_Constants
   * @{
   */
+/* Set to 1 if Host Keys have previously been stored in Flash (e.g. through the SDK Pairing Application)
+   and must be retrieved from the MCU Flash. Set to 0 otherwise to use static keys values.
+   This is used just as example in order to support static keys values (mainly
+   for debugging purpose ) or switch to the right and proper way to retrieve the keys */
+#define USE_PRE_LOADED_HOST_KEYS                        0U
 
 /* Set to 1 to optimize RAM usage. If set to 1 the StSafeA_Handle_t.InOutBuffer used through the Middleware APIs
    is shared

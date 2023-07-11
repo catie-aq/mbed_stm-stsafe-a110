@@ -37,7 +37,9 @@
 /* Private typedef -----------------------------------------------------------*/
 
 /* Private defines -----------------------------------------------------------*/
-
+#define MBEDTLS_AES_C
+#define MBEDTLS_CMAC_C
+#define MBEDTLS_CIPHER_MODE_CBC
 /* Private macros ------------------------------------------------------------*/
 
 /* Private variables ---------------------------------------------------------*/
@@ -45,8 +47,8 @@
 static uint8_t  aHostCipherKey[STSAFEA_HOST_KEY_LENGTH]; /*!< STSAFE-A's Host cipher key */
 static uint8_t  aHostMacKey   [STSAFEA_HOST_KEY_LENGTH]; /*!< STSAFE-A's Host Mac key */
 #else
-static uint8_t  aHostCipherKey[] = {0x11, 0x11, 0x22, 0x22, 0x33, 0x33, 0x44, 0x44, 0x55, 0x55, 0x66, 0x66, 0x77, 0x77, 0x88, 0x88}; /*!< STSAFE-A's Host cipher key */
-static uint8_t  aHostMacKey   [] = {0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, 0x88, 0x99, 0xAA, 0xBB, 0xCC, 0xDD, 0xEE, 0xFF}; /*!< STSAFE-A's Host Mac key */
+static uint8_t  aHostCipherKey[] = {0x7A, 0xE2, 0xD7, 0x31, 0x18, 0x58, 0x7F, 0x59, 0x6E, 0x05, 0xF5, 0x8E, 0x81, 0x1D, 0x54, 0xE7}; /*!< STSAFE-A's Host cipher key */
+static uint8_t  aHostMacKey   [] = {0xF8, 0x5C, 0xA8, 0x37, 0xBD, 0xF3, 0xF7, 0xCC, 0x5B, 0xC2, 0xE7, 0x7B, 0x4C, 0xC1, 0xBA, 0x6E}; /*!< STSAFE-A's Host Mac key */
 #endif /* USE_PRE_LOADED_HOST_KEYS */
 
 #if (USE_SIGNATURE_SESSION)
