@@ -21,21 +21,24 @@ uint8_t STSafeA110::init()
     return (IS_STSAFEA_HANDLER_VALID_PTR(&_stsafe_handler))? _statusCode : STSAFEA_UNEXPECTED_ERROR;
 }
 
+uint8_t STSafeA110::generate_random(uint8_t *buf, uint16_t length)
+{
+    StSafeA_LVBuffer_t RNG_key;
+    RNG_key.Data = buf;
+    RNG_key.Length = length;
+    return StSafeA_GenerateRandom(&_stsafe_handler, STSAFEA_EPHEMERAL_RND, length, &RNG_key, STSAFEA_MAC_NONE);
+}
+
 uint8_t STSafeA110::pairing(uint8_t *Host_MAC_Cipher_Key)
 {
     // C-MAC and Cipher keys are used to MAC the Command (C-MAC) and Response (R-MAC)
 
     // Host request 128b random Host C-MAC key via stsafe
-    StSafeA_LVBuffer_t RNG_key;
-    RNG_key.Data = _key.CMAC;
-    RNG_key.Length = STSAFEA_HOST_KEY_LENGTH;
-    _statusCode = StSafeA_GenerateRandom(&_stsafe_handler, STSAFEA_EPHEMERAL_RND, STSAFEA_HOST_KEY_LENGTH, &RNG_key, STSAFEA_MAC_NONE);
+    _statusCode = generate_random(_key.CMAC, STSAFEA_HOST_KEY_LENGTH);
 
     
     // Host request 128b random Host cipher key via stsafe
-    RNG_key.Data = _key.Cipher;
-    RNG_key.Length = STSAFEA_HOST_KEY_LENGTH;
-    _statusCode = StSafeA_GenerateRandom(&_stsafe_handler, STSAFEA_EPHEMERAL_RND, STSAFEA_HOST_KEY_LENGTH, &RNG_key, STSAFEA_MAC_NONE);
+    _statusCode = generate_random(_key.CMAC, STSAFEA_HOST_KEY_LENGTH);
 
     // Concat to 256b pairing key
     uint8_t MAC_Cipher[2*8*STSAFEA_HOST_KEY_LENGTH];
@@ -46,8 +49,6 @@ uint8_t STSafeA110::pairing(uint8_t *Host_MAC_Cipher_Key)
     // Check if host cipher key & host MAC key are populated
     StSafeA_HostKeySlotBuffer_t HostKeySlot;
     STS_CHK(_statusCode, StSafeA_HostKeySlotQuery(&_stsafe_handler, &HostKeySlot, STSAFEA_MAC_NONE));
-    printf("[SLOT: Ox%02X]: ", _statusCode);
-    printf("HostKey present: %d\n", HostKeySlot.HostKeyPresenceFlag);
 
     // Host send the two previous concatenated keys to the Host key slot via PUT ATTRIBUTE (needs DELETE KEY if slot already occupied)
     if ((_statusCode == STSAFEA_OK) && (HostKeySlot.HostKeyPresenceFlag == 0U)) // Not populated
@@ -61,9 +62,17 @@ uint8_t STSafeA110::pairing(uint8_t *Host_MAC_Cipher_Key)
                         2 * STSAFEA_HOST_KEY_LENGTH,
                         STSAFEA_MAC_NONE));
     }
+
     // Host stores the keys to a secure area
 
     return 0;
+}
+
+bool STSafeA110::paired(void)
+{
+    StSafeA_HostKeySlotBuffer_t HostKeySlot;
+    STS_CHK(_statusCode, StSafeA_HostKeySlotQuery(&_stsafe_handler, &HostKeySlot, STSAFEA_MAC_NONE));
+    return HostKeySlot.HostKeyPresenceFlag != 0;
 }
 
 int STSafeA110::echo(uint8_t *buffer_in, uint8_t *buffer_out, size_t length)

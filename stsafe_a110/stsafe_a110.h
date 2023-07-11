@@ -30,13 +30,17 @@ public:
 
     uint8_t init();
 
-    uint8_t pairing(uint8_t *Host_MAC_Cipher_Key);
-
     int echo(uint8_t *buffer_in, uint8_t *buffer_out, size_t length);
 
     int update_data_partition(uint8_t zone_index, uint8_t *buf, uint16_t length);
 
     int read_data_partition(uint8_t zone_index, uint8_t *buf, uint16_t length);
+
+    uint8_t generate_random(uint8_t *buf, uint16_t length);
+
+    uint8_t pairing(uint8_t *Host_MAC_Cipher_Key);
+
+    bool paired(void);
 
 private:
 
