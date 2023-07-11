@@ -29,9 +29,9 @@
 /* Private typedef -----------------------------------------------------------*/
 
 /* Private define ------------------------------------------------------------*/
-#define STSAFEA_DEVICE_ADDRESS                    0x0020
+#define STSAFEA_DEVICE_ADDRESS              0x0020
 
-#define STSAFEA_USE_OPTIMIZATION_CRC_TABLE 1U
+#define STSAFEA_USE_OPTIMIZATION_CRC_TABLE  1U
 
 #define STSAFEA_CRC16_X25_REFLECTED_LOOKUP_TABLE                                                   \
     0x0000, 0x1189, 0x2312, 0x329B, 0x4624, 0x57AD, 0x6536, 0x74BF, 0x8C48, 0x9DC1, 0xAF5A,        \
@@ -94,6 +94,7 @@ void Delay(uint32_t ms_delay);
   */
  int32_t I2C_Init(void)
 {
+  i2c.frequency(400000);
   return STSAFEA_BUS_OK;
 }
 
@@ -123,17 +124,7 @@ int32_t I2C_Send(uint16_t DevAddr, uint8_t *pData, uint16_t Length)
 
   ret = i2c.write(DevAddr, (char *)pData, Length);
 
-  if ((ret == I2C_EVENT_ERROR_NO_SLAVE) |(ret == I2C_EVENT_TRANSFER_EARLY_NACK))
-  {
-    return STSAFEA_BUS_NACK;
-  }
-
-  if (ret == I2C_EVENT_ERROR)
-  {
-    return STSAFEA_BUS_ERR;
-  }
-
-  return STSAFEA_BUS_OK;
+  return (ret != 0)? STSAFEA_COMMUNICATION_NACK : STSAFEA_BUS_OK;
 }
 
 /**
@@ -151,17 +142,7 @@ int32_t I2C_Recv(uint16_t DevAddr, uint8_t *pData, uint16_t Length)
 
   ret = i2c.read(DevAddr, (char *)pData, Length);
 
-  if ((ret == I2C_EVENT_ERROR_NO_SLAVE) |(ret == I2C_EVENT_TRANSFER_EARLY_NACK))
-  {
-    return STSAFEA_BUS_NACK;
-  }
-
-  if (ret == I2C_EVENT_ERROR)
-  {
-    return STSAFEA_BUS_ERR;
-  }
-
-  return STSAFEA_BUS_OK;
+  return (ret != 0)? STSAFEA_COMMUNICATION_NACK : STSAFEA_BUS_OK;
 }
 
 /**
