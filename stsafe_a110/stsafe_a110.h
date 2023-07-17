@@ -42,6 +42,10 @@ public:
 
     bool paired(void);
 
+    int secure_update_data_partition(uint8_t zone_index, uint8_t *buf, uint16_t length);
+
+    int secure_read_data_partition(uint8_t zone_index, uint8_t *buf, uint16_t length);
+
 private:
 
     uint8_t _statusCode;

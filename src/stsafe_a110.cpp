@@ -119,4 +119,39 @@ int STSafeA110::read_data_partition(uint8_t zone_index, uint8_t *buf, uint16_t l
                    STSAFEA_MAC_NONE);
 }
 
+int STSafeA110::secure_update_data_partition(uint8_t zone_index, uint8_t *buf, uint16_t length)
+{
+    StSafeA_LVBuffer_t lv_buffer;
+    lv_buffer.Data = buf;
+    lv_buffer.Length = length;
+
+    return StSafeA_Update(&_stsafe_handler,
+                   STSAFEA_FLAG_FALSE,
+                   STSAFEA_FLAG_FALSE,
+                   STSAFEA_FLAG_FALSE,
+                   STSAFEA_AC_ALWAYS,
+                   zone_index,
+                   0,
+                   &lv_buffer,
+                   STSAFEA_MAC_HOST_RMAC);
+}
+
+int STSafeA110::secure_read_data_partition(uint8_t zone_index, uint8_t *buf, uint16_t length)
+{
+    StSafeA_LVBuffer_t lv_buffer;
+    lv_buffer.Data = buf;
+    lv_buffer.Length = length;
+
+    return StSafeA_Read(&_stsafe_handler,
+                   STSAFEA_FLAG_FALSE,
+                   STSAFEA_FLAG_FALSE,
+                   STSAFEA_AC_ALWAYS,
+                   zone_index,
+                   0,
+                   length,
+                   length,
+                   &lv_buffer,
+                   STSAFEA_MAC_HOST_RMAC);
+}
+
 } // namespace sixtron
