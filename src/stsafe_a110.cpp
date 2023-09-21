@@ -61,6 +61,7 @@ uint8_t STSafeA110::pairing(uint8_t *Host_MAC_Cipher_Key)
                         Host_MAC_Cipher_Key,
                         2 * STSAFEA_HOST_KEY_LENGTH,
                         STSAFEA_MAC_NONE));
+        printf("[ATTRIBUTE]: 0x%02X\n", _statusCode);
     }
 
     // Host stores the keys to a secure area
